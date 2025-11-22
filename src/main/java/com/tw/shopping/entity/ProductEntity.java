@@ -32,13 +32,14 @@ public class ProductEntity {
 	
 	private Integer price;
 	
+	@Column(name = "product_image")
 	private String productImage;
 	
 	private String color;
 	
 	private String specification;
 	
-	private Integer ratung;
+	private Integer rating;
 	
 	private String stock;
 	
