@@ -32,7 +32,7 @@ public class ProductEntity {
 	
 	private Integer price;
 	
-	@Column(name = "product_image")
+	@Column(name = "productimage")
 	private String productImage;
 	
 	private String color;
