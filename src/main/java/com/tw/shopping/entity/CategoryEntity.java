@@ -27,7 +27,7 @@ public class CategoryEntity {
 	private String code;
 	
 	@Column(name = "parentid")
-	private String parentId;
+	private Integer parentId;
 	
 //	------------------------
 
