@@ -29,8 +29,8 @@ public class CategoryEntity {
 	@Column(name = "parentid")
 	private String parentId;
 	
-//	-------------------------
-	
+//	------------------------
+
 	@OneToMany(mappedBy = "category")
 	private List<ProductEntity> products;
 	
