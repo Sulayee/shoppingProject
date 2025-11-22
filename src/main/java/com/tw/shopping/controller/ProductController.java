@@ -18,6 +18,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    // 網址範例: /api/products/search?mainCategory=kitchen&minPrice=100&keyword=刀
     @GetMapping("/search")
     public List<ProductEntity> search(
         // required = false 代表這些參數是可選的，沒傳就是 null

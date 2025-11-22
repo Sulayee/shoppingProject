@@ -18,11 +18,13 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    // 取得所有大分類 (nav上面的那排)
     @GetMapping("/main")
     public List<CategoryEntity> getMainCateGories() {
         return categoryService.getMainCategories();
     }
     
+    // 使用者點選大分類之後取得其底下的小分類
     @GetMapping("/main/{code}/sub")
     public List<CategoryEntity> getSubCategories(@PathVariable("code") String code) {
         return categoryService.getSubCategoriesByMainCategory(code);
