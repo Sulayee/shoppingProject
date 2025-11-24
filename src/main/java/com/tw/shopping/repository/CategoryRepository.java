@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tw.shopping.entity.CategoryEntity;
-import com.tw.shopping.entity.ProductEntity;
 
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer>{
     // 用code 去找大分類
