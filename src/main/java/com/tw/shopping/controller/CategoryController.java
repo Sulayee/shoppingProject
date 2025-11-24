@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tw.shopping.entity.CategoryEntity;
 import com.tw.shopping.service.CategoryService;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
 @RequestMapping("/api/categories")
+@CrossOrigin(origins = "*")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
