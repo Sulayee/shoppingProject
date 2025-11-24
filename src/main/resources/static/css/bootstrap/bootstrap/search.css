@@ -1,0 +1,106 @@
+.collapsebtn {
+    background-color: burlywood;
+    position: relative;
+    top: 5px;
+    left: 245px;
+    font-size: 24px;
+    transition: 1s;
+}
+
+#filter {
+    width: 300px;
+    height: 100vh;
+    background-color: #f0d6be;
+    color: #5a3209
+}
+
+#filter.active {
+    margin-left: -315px;
+}
+
+#collapse.active {
+    margin-left: 50px;
+}
+
+/* cards的CSS */
+
+.product-inner-box .icons {
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    top: -3%;
+    transition:  all 0.2s ease-in-out, transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    opacity: 0;
+}
+
+.product-inner-box .icons a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.product-inner-box .onsale .badge {
+    background: #000;
+    font-size: 12px;
+    padding: 5px 14px;
+    top: 0px;
+    position: absolute;
+}
+
+.product-inner-box .onsale .badge:before {
+    border-width: 10px 0px 0px 10px;
+    border-color: transparent transparent transparent #000;
+    content: "";
+    position: absolute;
+    right: -8px;
+    width: 0;
+    bottom: 0;
+    border-style: solid;
+}
+
+.product-inner-box .onsale .badge::after {
+    border-width: 10px 8px 0 10px;
+    border-color: #000 transparent transparent;
+    content: "";
+    position: absolute;
+    right: -8px;
+    width: 0;
+    top: 0;
+    border-style: solid;
+}
+
+.product-inner-box img {
+    box-shadow: 0 33px 61px -29px rgb(0, 0, 0 / 26%);
+    height: 350px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.product-box.is-hover .icons {
+    transform: rotateY(-3%);
+    top: 3%;
+    opacity: 1;
+}
+
+.cart-btn {
+    position: absolute;
+    bottom: 20px;
+    text-align: center;
+    width: 100%;
+    opacity: 0;
+    transition: all 0.2s ease-in-out, transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.product-box.is-hover .cart-btn {
+    opacity: 1;
+}
+
+.product-name h3 {
+    font-size: 16px;
+    font-weight: 400;
+}
