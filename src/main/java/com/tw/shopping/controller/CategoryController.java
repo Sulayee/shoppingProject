@@ -29,5 +29,4 @@ public class CategoryController {
     public List<CategoryEntity> getSubCategories(@PathVariable("code") String code) {
         return categoryService.getSubCategoriesByMainCategory(code);
     }
-    
 }
