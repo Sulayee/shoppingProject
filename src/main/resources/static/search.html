@@ -156,13 +156,24 @@
             <div class="row" id="product-list">
             </div>
 
-            <nav aria-label="Page navigation" class="d-flex justify-content-center mt-3 mb-5">
-                <ul class="pagination">
-                    <li class="page-item disabled"><a class="page-link" href="#">上一頁</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">下一頁</a></li>
+            <nav aria-label="產品分頁" id="pagination-nav" style="display: none;">
+                <ul class="pagination justify-content-center mt-5">
+                    <!-- 上一頁 -->
+                    <li class="page-item" id="prevPageItem">
+                        <a class="page-link" href="#" onclick="changePage(-1); return false;" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <div id="pageNumbers" class="d-flex">
+                        <!-- 多少頁 -->
+                    </div>
+                    <!-- 下一頁 -->
+                    <li class="page-item" id="nextPageItem">
+                        <a class="page-link" href="#" onclick="changePage(1); return false;" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -235,6 +246,13 @@
         // ==========================================
         // 1. 全域設定與變數
         // ==========================================
+        // 追蹤當前頁碼 (從 0 開始)
+        let currentPage = 0;
+        // 預設每頁顯示筆數 12
+        const pageSize = 12;
+        // 從後端取得總頁數
+        let totalPages = 0;
+
         const API_BASE = "http://localhost:8080/api"; // 後端 API 位置
 
         // 從網址取得參數 (例如 search.html?category=kitchen)
@@ -244,7 +262,7 @@
         }
 
         // 紀錄目前的搜尋狀態
-        let currentMainCategory = getUrlParameter('category') || ''; // 從網址抓大分類 code
+        let currentMainCategory = ''; // 從網址抓大分類 code
         let currentSubCategory = '';
         let currentKeyword = '';
 
@@ -252,6 +270,8 @@
         // 2. 頁面初始化 (Entry Point)
         // ==========================================
         $(document).ready(function () {
+            // 從網址列讀取初始大分類，例如 search.html?mainCategory=kitchen
+            currentMainCategory = getUrlParameter('mainCategory') || '';
 
             // 介面初始化：如果有大分類，就載入對應側邊欄
             if (currentMainCategory) {
@@ -334,8 +354,8 @@
         function loadProducts() {
             // 1. 取得價格範圍
             let slider = $("#priceRangeSlider").data("ionRangeSlider");
-            let minPrice = slider ? slider.result.from : 0;
-            let maxPrice = slider ? slider.result.to : 10000;
+            let minPrice = slider ? slider.result.from : null;
+            let maxPrice = slider ? slider.result.to : null;
 
             // 2. 準備參數
             let requestData = {
@@ -343,7 +363,9 @@
                 subCategory: currentSubCategory,
                 minPrice: minPrice,
                 maxPrice: maxPrice,
-                keyword: currentKeyword
+                keyword: currentKeyword,
+                page: currentPage,
+                size: pageSize
             };
 
             // 3. 顯示 Loading 狀態
@@ -351,15 +373,26 @@
 
             // 4. 發送 AJAX
             $.ajax({
-                url: `${API_BASE}/products/search`,
+                url: `${API_BASE}/products/search?`,
                 method: 'GET',
                 data: requestData,
-                success: function (products) {
-                    renderProductCards(products);
+                success: function (response) {
+                    // 改成 response 是因為後端改成了 Page 物件
+
+                    // 更新全域總頁數
+                    totalPages = response.totalPages;
+
+                    // 渲染商品
+                    renderProductCards(response.content);
+
+                    // 渲染分頁按鈕 (傳入: 當前頁碼, 總頁數)
+                    renderPagination(response.number, response.totalPages);
                 },
                 error: function (err) {
                     console.error("搜尋商品失敗", err);
                     $("#product-list").html('<div class="col-12 text-center text-danger">載入商品發生錯誤，請稍後再試。</div>');
+                    // 隱藏分頁
+                    $("#pagination-nav").hide;
                 }
             });
         }
@@ -381,7 +414,7 @@
                 let imgUrl = product.productImage ? product.productImage : 'https://dummyimage.com/400x400/dee2e6/6c757d.jpg&text=No+Image';
 
                 let cardHtml = `
-                <div class="col-lg-3 col-md-4 mb-3">
+                <div class="col-lg-3 col-md-3 mb-3">
                     <div class="product-box">
                         <div class="product-inner-box position-relative">
                             <div class="icons position-absolute">
@@ -414,6 +447,80 @@
             bindHoverEffects();
         }
 
+        // 分頁邏輯
+
+        function renderPagination(current, totalPages) {
+            const $nav = $("#pagination-nav");
+            const $pageNumbers = $("#pageNumbers");
+            const $prevBtn = $("#prevPageItem");
+            const $nextBtn = $("#nextPageItem");
+
+            // 如果只有 1 頁或沒資料，不顯示分頁條
+            if (totalPages <= 1) {
+                $nav.hide();
+                return;
+            }
+            $nav.show();
+
+            // 清空舊頁碼
+            $pageNumbers.empty();
+
+            // 設定上一頁按鈕狀態 (如果當前是第0頁，就 disabled)
+            if (current === 0) {
+                $prevBtn.addClass("disabled");
+            } else {
+                $prevBtn.removeClass("disabled");
+            }
+
+            // 設定下一頁按鈕狀態
+            if (current === totalPages - 1) {
+                $nextBtn.addClass("disabled");
+            } else {
+                $nextBtn.removeClass("disabled");
+            }
+
+            // 計算要顯示哪些頁碼 (最多顯示 5 個數字)
+            const maxPagesToShow = 5;
+            let startPage = Math.max(0, current - Math.floor(maxPagesToShow / 2));
+            let endPage = Math.min(totalPages - 1, startPage + maxPagesToShow - 1);
+
+            if (endPage - startPage + 1 < maxPagesToShow && totalPages >= maxPagesToShow) {
+                startPage = Math.max(0, endPage - maxPagesToShow + 1);
+            }
+
+            // 產生頁碼 HTML
+            for (let i = startPage; i <= endPage; i++) {
+                // i + 1 是因為顯示給使用者看要從 1 開始，但程式邏輯是 0
+                let activeClass = (i === current) ? 'active' : '';
+                let pageHtml = `
+                    <li class="page-item ${activeClass}">
+                        <a class="page-link" href="#" onclick="goToPage(${i}); return false;">${i + 1}</a>
+                    </li>
+                `;
+                $pageNumbers.append(pageHtml);
+            }
+        }
+
+        // 跳轉到指定頁面
+        function goToPage(pageIndex) {
+            // 防止超出範圍
+            if (pageIndex < 0 || pageIndex >= totalPages) return;
+
+            currentPage = pageIndex;
+            loadProducts();
+
+            // 回到列表頂端
+            $('html, body').animate({
+                scrollTop: $("#product-list").offset().top - 100
+            }, 300);
+        }
+
+        // 上一頁 / 下一頁
+        function changePage(delta) {
+            let newPage = currentPage + delta;
+            goToPage(newPage);
+        }
+
         // ==========================================
         // 4. 事件綁定 (Event Listeners)
         // ==========================================
@@ -422,6 +529,7 @@
             // A. 監聽「側邊欄分類」點擊 (動態生成元素需用 delegate)
             $(document).on('change', '.category-radio', function () {
                 currentSubCategory = $(this).val(); // 取得 value (spoon, pot...)
+                currentPage = 0; // 換分類時，重置為第一頁
                 loadProducts(); // 重新搜尋
             });
 
@@ -429,6 +537,7 @@
             // 注意：這裡假設你的 form 按鈕是 submit 類型，我們要阻擋它跳頁
             $("form").on("submit", function (e) {
                 e.preventDefault();
+                currentPage = 0; // 篩選價格時，重置為第一頁
                 loadProducts();
             });
 
@@ -437,6 +546,7 @@
                 if (e.key === 'Enter') {
                     e.preventDefault(); // 防止 form submit
                     currentKeyword = $(this).val();
+                    currentPage = 0; // 搜尋關鍵字時，重置為第一頁
                     loadProducts();
                 }
             });
@@ -445,6 +555,7 @@
             $(".search-icon").parent().on("click", function (e) {
                 e.preventDefault();
                 currentKeyword = $(".search-input").val();
+                currentPage = 0; // 重置為第一頁
                 loadProducts();
             });
         }
@@ -461,7 +572,7 @@
         function addToCart(productId) {
             alert("已加入購物車 ID: " + productId);
             // 這裡之後可以寫 AJAX 呼叫後端加入購物車 API
-        }
+        }            
     </script>
 </body>
 

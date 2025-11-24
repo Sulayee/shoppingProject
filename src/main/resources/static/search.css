@@ -30,7 +30,7 @@
     flex-direction: column;
     gap: 4px;
     top: -3%;
-    transition:  all 0.2s ease-in-out, transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out, transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
     opacity: 0;
 }
 
@@ -103,4 +103,22 @@
 .product-name h3 {
     font-size: 16px;
     font-weight: 400;
+}
+
+/* 分頁按鈕樣式微調 */
+.pagination .page-link {
+    color: #5a3209;
+    /* 配合您的主題色 */
+    cursor: pointer;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #ec7f13;
+    /* 主題橘色 */
+    border-color: #ec7f13;
+    color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #ccc;
 }
