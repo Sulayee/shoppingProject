@@ -45,6 +45,9 @@ $(document).ready(function () {
         skin: "round"
     });
 
+    // 載入上方大分類的導覽列的函式
+    loadMainNavigation();
+
     // 預設載入第一次商品列表
     loadProducts();
 
@@ -59,13 +62,48 @@ $(document).ready(function () {
     });
 });
 
+/*
+* 載入上方大分類導覽列
+*/
+function loadMainNavigation() {
+    $.ajax({
+        url: `${API_BASE}/categories/main`, // 呼叫後端 API
+        method: 'GET',
+        success: function (categories) {
+            let html = '';
+
+            // 選項：全部商品 (讓使用者可以點回首頁或清空篩選)
+            html += `
+                <li class="category-item ${currentMainCategory === '' ? 'active' : ''}">
+                    <a href="search.html">全部商品</a>
+                </li>`;
+
+            // 迴圈跑後端回傳的所有大分類
+            categories.forEach(cat => {
+                // 判斷是否為當前選中的分類 (為了加 highlight 樣式)
+                let isActive = (cat.code === currentMainCategory) ? 'active' : '';
+
+                html += `
+                <li class="category-item ${isActive}">
+                    <a href="search.html?mainCategory=${cat.code}">${cat.cname}</a>
+                </li>`;
+            });
+
+            $("#main-nav-list").html(html);
+        },
+        error: function (err) {
+            console.error("無法載入主分類導覽", err);
+        }
+    });
+}
+
 // ==========================================
 // 3. 功能函式：載入資料
 // ==========================================
-/**
-         * 載入側邊欄小分類
-         * API: /api/categories/main/{code}/sub
-         */
+/*
+* 載入側邊欄小分類
+* API: /api/categories/main/{code}/sub
+*/
 function loadSidebar(mainCategoryCode) {
     $.ajax({
         url: `${API_BASE
@@ -102,9 +140,9 @@ function loadSidebar(mainCategoryCode) {
     });
 }
 /**
-         * 載入商品列表 (核心搜尋功能)
-         * API: /api/products/search
-         */
+* 載入商品列表 (核心搜尋功能)
+* API: /api/products/search
+*/
 function loadProducts() {
     // 1. 取得價格範圍
     let slider = $("#priceRangeSlider").data("ionRangeSlider");
@@ -150,9 +188,11 @@ function loadProducts() {
         }
     });
 }
-/**
-         * 渲染 HTML：把 JSON 資料轉成商品卡片
-         */
+
+/*
+* 渲染 HTML：把 JSON 資料轉成商品卡片
+*/
+
 function renderProductCards(products) {
     let container = $("#product-list");
     container.empty(); // 清空 loading
@@ -271,6 +311,7 @@ function changePage(delta) {
     let newPage = currentPage + delta;
     goToPage(newPage);
 }
+
 // ==========================================
 // 4. 事件綁定 (Event Listeners)
 // ==========================================
