@@ -3,6 +3,7 @@ package com.tw.shopping.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,14 +23,23 @@ public class ProductController {
 
     // 網址範例: /api/products/search?mainCategory=kitchen&minPrice=100&keyword=刀
     @GetMapping("/search")
-    public List<ProductEntity> search(
+    public Page<ProductEntity> search(
         // required = false 代表這些參數是可選的，沒傳就是 null
+        // 大分類
         @RequestParam(required = false) String mainCategory,
+        // 小分類
         @RequestParam(required = false) String subCategory,
+        // 最大金額
         @RequestParam(required = false) Integer maxPrice,
+        // 最小金額
         @RequestParam(required = false) Integer minPrice,
-        @RequestParam(required = false) String keyword
+        // 搜尋關鍵字
+        @RequestParam(required = false) String keyword,
+        // 預設頁碼 : 從 0 開始
+        @RequestParam(defaultValue = "0") Integer page,
+        //  預設每頁顯示的商品數量
+        @RequestParam(defaultValue = "12") Integer size
     ) {
-        return productService.searchProducts(mainCategory, subCategory, minPrice, maxPrice, keyword);
+        return productService.searchProducts(mainCategory, subCategory, minPrice, maxPrice, keyword, page, size);
     }
 }

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -24,7 +27,12 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<ProductEntity> searchProducts(String mainCategoryCode, String subCategoryCode, Integer minPrice, Integer maxPrice, String keyword){
+    public Page<ProductEntity> searchProducts(String mainCategoryCode, String subCategoryCode, Integer minPrice, Integer maxPrice, String keyword, Integer page, Integer size){
+
+        // 建立 Pageable 物件
+        // PageRequest.of(頁碼, 每頁大小)
+        // Spring Data JPA 的頁碼從 0 開始 每頁 12 筆資料
+        Pageable pageable = PageRequest.of(page, size);
 
         Specification<ProductEntity> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -66,6 +74,6 @@ public class ProductService {
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
-        return productRepository.findAll(spec);
+        return productRepository.findAll(spec, pageable);
     }
 }
