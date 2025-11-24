@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>廚房廚具</title>
+    <!-- Bootstarp.CSS -->
+    <link rel="stylesheet" href="./css/bootstrap.css">
+
+    <!-- Bootstarp.ICON -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- Bootstarp.JS -->
+    <script src="./js/bootstrap.bundle.js"></script>
+
+    <!-- 這隻檔案的CSS -->
+    <link rel="stylesheet" href="search.css">
+
+    <!-- Ion.RangeSlider.CSS(要做範圍拉桿的) -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
+
+    <!-- front.CSS -->
+    <link rel="stylesheet" href="front_code.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- Ion.RangeSlider.JS(要做範圍拉桿的) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- 最上層 -->
+    <header class="header-bg sticky-top border-bottom">
+        <!-- navbar-expand-lg 寬度 < 992px 摺疊成 漢堡選單-->
+        <!-- container-lg 寬度992px以上固定寬度 以下全寬(100%) 不貼齊螢幕邊緣 -->
+        <nav class="navbar navbar-expand-lg container-lg">
+            <!-- container-fluid 寬度隨瀏覽器視窗延伸到100% -->
+            <!-- px-0 左右內邊距設為 0 -->
+            <div class="container-fluid px-0">
+                <!-- navbar-brand 品牌區域 -->
+                <!-- d-flex 變成 flex 容器 -->
+                <!-- align-items-center 讓圖片和文字在垂直方向上置中對齊 -->
+                <a class="navbar-brand d-flex align-items-center" href="/front_code.html">
+                    <!-- me-2 右邊距 0.5rem(約 8px) -->
+                    <img src="./img/logo.png" alt="HomeStyle Logo" width="40" height="40" class="me-2">
+                    <!-- fs-4 字體大小約 1.5rem -->
+                    <!-- fw-bold 字體加粗 -->
+                    <span class="fs-4 fw-bold">HomeStyle</span>
+                </a>
+                <!-- navbar-toggler 有邊框、圓角 對齊 Navbar 的設計 小於 .navbar-expand-* 指定的斷點時才會顯示 -->
+                <!-- data-bs-toggle="collapse" 觸發一個可收合的區塊 -->
+                <!-- data-bs-target="#navbarNav" 指定按鈕要控制的目標元素-->
+                <!-- aria-controls="navbarNav" 無障礙屬性 告訴螢幕閱讀器這個按鈕控制的區塊是哪個 對一般使用者沒視覺效果 -->
+                <!-- aria-expanded="false" 無障礙屬性 表示折疊選單收合狀態 選單展開時會自動改成 true -->
+                <!-- aria-label="Toggle navigation" 無障礙文字 讓螢幕閱讀器知道按鈕是「切換導覽列」的用途 -->
+                <!-- navbar-toggler-icon 漢堡選單圖示 正常顯示必須搭配 <nav class="navbar navbar-light bg-light"> -->
+                <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                    class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+                    <!-- <span class="navbar-toggler-icon"></span> -->
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link px-3 fw-medium" href="#">作品實例</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 fw-medium" href="#">商品分類</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 fw-medium" href="#">關於我們</a>
+                        </li>
+                    </ul>
+
+                    <!-- 🔍 搜尋欄區塊 -->
+                    <form class="search-bar mx-3 flex-grow-1">
+                        <div class="input-wrapper position-relative">
+                            <span class="material-symbols-outlined search-icon">search</span>
+                            <input type="text" class="form-control search-input" placeholder="搜尋...">
+                        </div>
+                    </form>
+
+                    <div class="d-flex align-items-center pt-3 pt-lg-0">
+                        <a class="icon-btn me-2" href="#">
+                            <span class="material-symbols-outlined">search</span>
+                        </a>
+                        <a class="icon-btn me-2" href="#">
+                            <span class="material-symbols-outlined">shopping_bag</span>
+                        </a>
+                        <a class="icon-btn me-2" href="#">
+                            <span class="material-symbols-outlined">person</span>
+                        </a>
+                        <a class="icon-btn" href="#">
+                            <span class="material-symbols-outlined">login</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 次導覽列：分類標籤 -->
+    <div class="category-bar border-top border-bottom">
+        <div class="container-lg">
+            <ul class="category-list d-flex justify-content-between flex-wrap mb-0">
+                <li class="category-item"><a href="#">臥室寢具</a></li>
+                <li class="category-item"><a href="#">廚房廚具</a></li>
+                <li class="category-item"><a href="#">裝飾用品</a></li>
+                <li class="category-item"><a href="#">燈具照明</a></li>
+                <li class="category-item"><a href="#">居家清潔</a></li>
+                <li class="category-item"><a href="#">智慧家電</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 左側細項分類欄 -->
+    <div class="d-flex align-items-stretch">
+        <div>
+            <nav id="filter">
+                <button type="button" id="collapse" class="btn collapsebtn">
+                    <i class="bi bi-arrow-bar-left"></i>
+                </button>
+
+                <form action="">
+                    <div class="p-3">
+                        <label class="fs-4 m-1">分類選擇</label><br>
+                        <div id="category-filter">
+                            <div class="test-muted small">載入分類中......</div>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <label class="fs-4 m-1">價格範圍</label>
+                        <input type="text" id="priceRangeSlider" name="priceRange">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-warning m-1 ">確定</button>
+                        </div>
+                    </div>
+                </form>
+            </nav>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <h2 id="category-title">所有商品</h2>
+            </div>
+            <div class="row" id="product-list">
+            </div>
+
+            <nav aria-label="Page navigation" class="d-flex justify-content-center mt-3 mb-5">
+                <ul class="pagination">
+                    <li class="page-item disabled"><a class="page-link" href="#">上一頁</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">下一頁</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <footer class="mt-auto py-5 border-top footer-bg">
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-12 col-md-3 mb-4 mb-md-3">
+                    <h5 class="fw-bold">HomeStyle</h5>
+                    <p class="text-body-secondary small">為每個家帶來溫暖與設計感。</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a class="social-icon" href="#"><svg fill="none" height="24" stroke="currentColor"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                                width="24" xmlns="http://www.w3.org/2000/svg">
+                                <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                            </svg></a>
+                        <a class="social-icon" href="#"><svg fill="none" height="24" stroke="currentColor"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                                width="24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg></a>
+                        <a class="social-icon" href="#"><svg fill="none" height="24" stroke="currentColor"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                                width="24" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M21.2 15.4c-1.2 1.2-3.1 1.2-4.2 0-1.2-1.2-1.2-3.1 0-4.2s3.1-1.2 4.2 0c1.2 1.2 1.2 3.1 0 4.2z">
+                                </path>
+                                <path d="M12 12c-1.2 1.2-3.1 1.2-4.2 0-1.2-1.2-1.2-3.1 0-4.2s3.1-1.2 4.2 0"></path>
+                                <path d="m5.2 21.2 2.1-2.1"></path>
+                                <path d="m8.6 8.6 2.1-2.1"></path>
+                                <path d="m15.4 15.4 2.1-2.1"></path>
+                                <path d="M12 22s-4-2-4-8 4-8 4-8"></path>
+                                <path d="m12 2 4 6-4 6"></path>
+                            </svg></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-3">
+                    <h5 class="fw-bold mb-3">關於我們</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">品牌故事</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">聯絡資訊</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">人才招募</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-3">
+                    <h5 class="fw-bold mb-3">客戶服務</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">常見問題</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">退換貨政策</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">運送方式</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-3">
+                    <h5 class="fw-bold mb-3">條款與政策</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">隱私權政策</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">服務條款</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-center pt-4 mt-4 border-top">
+                <p class="small text-body-secondary">© 2024 DecorCo. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // 1. 全域設定與變數
+        // ==========================================
+        const API_BASE = "http://localhost:8080/api"; // 後端 API 位置
+
+        // 從網址取得參數 (例如 search.html?category=kitchen)
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // 紀錄目前的搜尋狀態
+        let currentMainCategory = getUrlParameter('category') || ''; // 從網址抓大分類 code
+        let currentSubCategory = '';
+        let currentKeyword = '';
+
+        // ==========================================
+        // 2. 頁面初始化 (Entry Point)
+        // ==========================================
+        $(document).ready(function () {
+
+            // 介面初始化：如果有大分類，就載入對應側邊欄
+            if (currentMainCategory) {
+                loadSidebar(currentMainCategory);
+                // 這裡可以設一個暫時的標題，之後可優化成顯示中文名稱
+                $("#category-title").text(currentMainCategory.toUpperCase());
+            }
+
+            // 初始化價格拉桿 (Ion Range Slider)
+            $("#priceRangeSlider").ionRangeSlider({
+                type: "double",
+                min: 0,
+                max: 10000,
+                from: 0,
+                to: 10000,
+                step: 100,
+                prefix: "NT$",
+                skin: "round"
+            });
+
+            // 預設載入第一次商品列表
+            loadProducts();
+
+            // 綁定所有按鈕與互動事件
+            bindEvents();
+
+            // 左側選單收合動畫 (原有的程式碼)
+            $("#collapse").on("click", function () {
+                $("#filter").toggleClass("active");
+                $(".bi-arrow-bar-left").toggleClass("bi-arrow-bar-right");
+                $("#collapse").toggleClass("active");
+            });
+        });
+
+        // ==========================================
+        // 3. 功能函式：載入資料
+        // ==========================================
+
+        /**
+         * 載入側邊欄小分類
+         * API: /api/categories/main/{code}/sub
+         */
+        function loadSidebar(mainCategoryCode) {
+            $.ajax({
+                url: `${API_BASE}/categories/main/${mainCategoryCode}/sub`,
+                method: 'GET',
+                success: function (subCategories) {
+                    let html = '';
+
+                    // 選項：全部 (不篩選小分類)
+                    html += `
+                    <div class="form-check">
+                        <input class="form-check-input category-radio" type="radio" name="subCategory" id="cat-all" value="" checked>
+                        <label class="form-check-label" for="cat-all">全部顯示</label>
+                    </div>`;
+
+                    // 選項：後端回傳的子分類
+                    subCategories.forEach(cat => {
+                        // value 帶入 code (例如 'spoon')
+                        html += `
+                        <div class="form-check">
+                            <input class="form-check-input category-radio" type="radio" name="subCategory" id="cat-${cat.code}" value="${cat.code}">
+                            <label class="form-check-label" for="cat-${cat.code}">${cat.cname}</label>
+                        </div>`;
+                    });
+
+                    $("#category-filter").html(html);
+                },
+                error: function (err) {
+                    console.error("載入側邊欄失敗", err);
+                    $("#category-filter").html('<div class="text-danger">無法載入分類</div>');
+                }
+            });
+        }
+
+        /**
+         * 載入商品列表 (核心搜尋功能)
+         * API: /api/products/search
+         */
+        function loadProducts() {
+            // 1. 取得價格範圍
+            let slider = $("#priceRangeSlider").data("ionRangeSlider");
+            let minPrice = slider ? slider.result.from : 0;
+            let maxPrice = slider ? slider.result.to : 10000;
+
+            // 2. 準備參數
+            let requestData = {
+                mainCategory: currentMainCategory,
+                subCategory: currentSubCategory,
+                minPrice: minPrice,
+                maxPrice: maxPrice,
+                keyword: currentKeyword
+            };
+
+            // 3. 顯示 Loading 狀態
+            $("#product-list").html('<div class="col-12 text-center p-5"><div class="spinner-border text-primary" role="status"></div></div>');
+
+            // 4. 發送 AJAX
+            $.ajax({
+                url: `${API_BASE}/products/search`,
+                method: 'GET',
+                data: requestData,
+                success: function (products) {
+                    renderProductCards(products);
+                },
+                error: function (err) {
+                    console.error("搜尋商品失敗", err);
+                    $("#product-list").html('<div class="col-12 text-center text-danger">載入商品發生錯誤，請稍後再試。</div>');
+                }
+            });
+        }
+
+        /**
+         * 渲染 HTML：把 JSON 資料轉成商品卡片
+         */
+        function renderProductCards(products) {
+            let container = $("#product-list");
+            container.empty(); // 清空 loading
+
+            if (!products || products.length === 0) {
+                container.html('<div class="col-12 text-center mt-5"><h4 class="text-muted">沒有找到符合條件的商品</h4></div>');
+                return;
+            }
+
+            products.forEach(product => {
+                // 處理圖片 (如果沒有圖片，顯示預設圖)
+                let imgUrl = product.productImage ? product.productImage : 'https://dummyimage.com/400x400/dee2e6/6c757d.jpg&text=No+Image';
+
+                let cardHtml = `
+                <div class="col-lg-3 col-md-4 mb-3">
+                    <div class="product-box">
+                        <div class="product-inner-box position-relative">
+                            <div class="icons position-absolute">
+                                <a href="#" class="text-decoration-none text-dark"><i class="bi bi-suit-heart"></i></a>
+                                <a href="#" class="text-decoration-none text-dark"><i class="bi bi-eye"></i></a>
+                            </div>
+                            <img src="${imgUrl}" alt="${product.pname}" class="img-fluid" style="height: 250px; width:100%; object-fit: cover;">
+                            
+                            <div class="cart-btn">
+                                <button class="btn bg-white shadow-sm rounded-pill" onclick="addToCart(${product.productId})">
+                                    <i class="bi bi-cart-plus"></i> 加入購物車
+                                </button>
+                            </div>
+                        </div> 
+                        <div class="product-info mt-3">
+                            <div class="product-name">
+                                <h3>${product.pname}</h3>
+                            </div>
+                            <div class="product-price">
+                                NT$<span>${product.price}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+                container.append(cardHtml);
+            });
+
+            // 重新綁定 hover 特效 (因為元素是新長出來的)
+            bindHoverEffects();
+        }
+
+        // ==========================================
+        // 4. 事件綁定 (Event Listeners)
+        // ==========================================
+        function bindEvents() {
+
+            // A. 監聽「側邊欄分類」點擊 (動態生成元素需用 delegate)
+            $(document).on('change', '.category-radio', function () {
+                currentSubCategory = $(this).val(); // 取得 value (spoon, pot...)
+                loadProducts(); // 重新搜尋
+            });
+
+            // B. 監聽「價格確定」按鈕
+            // 注意：這裡假設你的 form 按鈕是 submit 類型，我們要阻擋它跳頁
+            $("form").on("submit", function (e) {
+                e.preventDefault();
+                loadProducts();
+            });
+
+            // C. 監聽上方「搜尋框」輸入 (按下 Enter)
+            $(".search-input").on("keyup", function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // 防止 form submit
+                    currentKeyword = $(this).val();
+                    loadProducts();
+                }
+            });
+
+            // D. 監聽上方「搜尋圖示」點擊
+            $(".search-icon").parent().on("click", function (e) {
+                e.preventDefault();
+                currentKeyword = $(".search-input").val();
+                loadProducts();
+            });
+        }
+
+        // 綁定 CSS Hover 效果
+        function bindHoverEffects() {
+            $('.product-box').hover(
+                function () { $(this).addClass('is-hover'); },
+                function () { $(this).removeClass('is-hover'); }
+            );
+        }
+
+        // 購物車功能 (預留)
+        function addToCart(productId) {
+            alert("已加入購物車 ID: " + productId);
+            // 這裡之後可以寫 AJAX 呼叫後端加入購物車 API
+        }
+    </script>
+</body>
+
+</html>
