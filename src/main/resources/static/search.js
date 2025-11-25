@@ -9,7 +9,7 @@ const pageSize = 12;
 // 從後端取得總頁數
 let totalPages = 0;
 
-const API_BASE = "http://localhost:8080/api"; // 後端 API 位置
+const API_BASE = "/api"; // 後端 API 位置
 
 function getUrlParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
