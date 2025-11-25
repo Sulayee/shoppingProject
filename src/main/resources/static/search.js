@@ -206,7 +206,7 @@ function renderProductCards(products) {
         let imgUrl = product.productImage ? product.productImage : 'https: //dummyimage.com/400x400/dee2e6/6c757d.jpg&text=No+Image';
 
         let cardHtml = `
-                <div class="col-lg-3 col-md-3 mb-3">
+                <div class="col-lg-4 col-md-4 mb-4">
                     <div class="product-box">
                         <div class="product-inner-box position-relative">
                             <div class="icons position-absolute">
