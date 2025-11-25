@@ -341,7 +341,7 @@ function bindEvents() {
     });
 
     // D. 監聽上方「搜尋圖示」點擊
-    $(".search-icon").parent().on("click", function (e) {
+    $("#search-icon").parent().on("click", function (e) {
         e.preventDefault();
         currentKeyword = $(".search-input").val();
         currentPage = 0; // 重置為第一頁
