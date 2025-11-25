@@ -22,13 +22,15 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
 
     <!-- front.CSS -->
-    <link rel="stylesheet" href="front_code.css">
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700;900&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="./js/header_footer.js">
+    <link rel="stylesheet" href="./css/header_footer.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- JQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/jquery-3.7.1.min.js"></script>
 
     <!-- Ion.RangeSlider.JS(要做範圍拉桿的) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
@@ -40,74 +42,7 @@
 
 <body>
     <!-- 最上層 -->
-    <header class="header-bg sticky-top border-bottom">
-        <!-- navbar-expand-lg 寬度 < 992px 摺疊成 漢堡選單-->
-        <!-- container-lg 寬度992px以上固定寬度 以下全寬(100%) 不貼齊螢幕邊緣 -->
-        <nav class="navbar navbar-expand-lg container-lg">
-            <!-- container-fluid 寬度隨瀏覽器視窗延伸到100% -->
-            <!-- px-0 左右內邊距設為 0 -->
-            <div class="container-fluid px-0">
-                <!-- navbar-brand 品牌區域 -->
-                <!-- d-flex 變成 flex 容器 -->
-                <!-- align-items-center 讓圖片和文字在垂直方向上置中對齊 -->
-                <a class="navbar-brand d-flex align-items-center" href="/front_code.html">
-                    <!-- me-2 右邊距 0.5rem(約 8px) -->
-                    <img src="./img/logo.png" alt="HomeStyle Logo" width="40" height="40" class="me-2">
-                    <!-- fs-4 字體大小約 1.5rem -->
-                    <!-- fw-bold 字體加粗 -->
-                    <span class="fs-4 fw-bold">HomeStyle</span>
-                </a>
-                <!-- navbar-toggler 有邊框、圓角 對齊 Navbar 的設計 小於 .navbar-expand-* 指定的斷點時才會顯示 -->
-                <!-- data-bs-toggle="collapse" 觸發一個可收合的區塊 -->
-                <!-- data-bs-target="#navbarNav" 指定按鈕要控制的目標元素-->
-                <!-- aria-controls="navbarNav" 無障礙屬性 告訴螢幕閱讀器這個按鈕控制的區塊是哪個 對一般使用者沒視覺效果 -->
-                <!-- aria-expanded="false" 無障礙屬性 表示折疊選單收合狀態 選單展開時會自動改成 true -->
-                <!-- aria-label="Toggle navigation" 無障礙文字 讓螢幕閱讀器知道按鈕是「切換導覽列」的用途 -->
-                <!-- navbar-toggler-icon 漢堡選單圖示 正常顯示必須搭配 <nav class="navbar navbar-light bg-light"> -->
-                <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
-                    class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
-                    <!-- <span class="navbar-toggler-icon"></span> -->
-                    <span class="material-symbols-outlined">menu</span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link px-3 fw-medium" href="#">作品實例</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3 fw-medium" href="#">商品分類</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3 fw-medium" href="#">關於我們</a>
-                        </li>
-                    </ul>
-
-                    <!-- 🔍 搜尋欄區塊 -->
-                    <form class="search-bar mx-3 flex-grow-1">
-                        <div class="input-wrapper position-relative">
-                            <!-- <span class="material-symbols-outlined search-icon">search</span> -->
-                            <input type="text" class="form-control search-input" placeholder="搜尋...">
-                        </div>
-                    </form>
-
-                    <div class="d-flex align-items-center pt-3 pt-lg-0">
-                        <a class="icon-btn me-2" href="#">
-                            <span class="material-symbols-outlined" id="search-icon">search</span>
-                        </a>
-                        <a class="icon-btn me-2" href="#">
-                            <span class="material-symbols-outlined">shopping_bag</span>
-                        </a>
-                        <a class="icon-btn me-2" href="#">
-                            <span class="material-symbols-outlined">person</span>
-                        </a>
-                        <a class="icon-btn" href="#">
-                            <span class="material-symbols-outlined">login</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <div id="header"></div>
 
     <!-- 次導覽列：分類標籤 -->
     <div class="category-bar border-top border-bottom">
@@ -173,70 +108,9 @@
     </div>
 
     <!-- 最下面的 footer -->
-    <footer class="mt-auto py-5 border-top footer-bg">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col-12 col-md-3 mb-4 mb-md-3">
-                    <h5 class="fw-bold">HomeStyle</h5>
-                    <p class="text-body-secondary small">為每個家帶來溫暖與設計感。</p>
-                    <div class="d-flex gap-3 mt-3">
-                        <a class="social-icon" href="#"><svg fill="none" height="24" stroke="currentColor"
-                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                width="24" xmlns="http://www.w3.org/2000/svg">
-                                <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                            </svg></a>
-                        <a class="social-icon" href="#"><svg fill="none" height="24" stroke="currentColor"
-                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                width="24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                            </svg></a>
-                        <a class="social-icon" href="#"><svg fill="none" height="24" stroke="currentColor"
-                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                width="24" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M21.2 15.4c-1.2 1.2-3.1 1.2-4.2 0-1.2-1.2-1.2-3.1 0-4.2s3.1-1.2 4.2 0c1.2 1.2 1.2 3.1 0 4.2z">
-                                </path>
-                                <path d="M12 12c-1.2 1.2-3.1 1.2-4.2 0-1.2-1.2-1.2-3.1 0-4.2s3.1-1.2 4.2 0"></path>
-                                <path d="m5.2 21.2 2.1-2.1"></path>
-                                <path d="m8.6 8.6 2.1-2.1"></path>
-                                <path d="m15.4 15.4 2.1-2.1"></path>
-                                <path d="M12 22s-4-2-4-8 4-8 4-8"></path>
-                                <path d="m12 2 4 6-4 6"></path>
-                            </svg></a>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3 mb-3">
-                    <h5 class="fw-bold mb-3">關於我們</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">品牌故事</a></li>
-                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">聯絡資訊</a></li>
-                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">人才招募</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-md-3 mb-3">
-                    <h5 class="fw-bold mb-3">客戶服務</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">常見問題</a></li>
-                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">退換貨政策</a></li>
-                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">運送方式</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-md-3 mb-3">
-                    <h5 class="fw-bold mb-3">條款與政策</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">隱私權政策</a></li>
-                        <li class="nav-item mb-2"><a class="nav-link p-0 footer-link" href="#">服務條款</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="d-flex flex-column flex-sm-row justify-content-center pt-4 mt-4 border-top">
-                <p class="small text-body-secondary">© 2024 DecorCo. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <div id="footer"></div>
 
+    <script src="/js/include.js"></script>
     <script src="./search.js"></script>
 </body>
 

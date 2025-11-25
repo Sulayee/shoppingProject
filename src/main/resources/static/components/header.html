@@ -1,0 +1,90 @@
+<!-- Fixed Wrapper for Sticky Header -->
+    <div class="fixed-header-wrapper" id="header-wrapper">
+
+        <!-- Main Navigation -->
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid px-4 px-lg-5">
+                
+                <!-- Mobile Toggle -->
+                <button class="navbar-toggler border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                    <i class="bi bi-list fs-1 text-dark"></i>
+                </button>
+
+                <!-- Logo (Centered on mobile, Left on Desktop) -->
+                <a class="navbar-brand mx-auto mx-lg-0" href="#">OIKOS</a>
+
+                <!-- Desktop Menu (Center) -->
+                <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">裝潢靈感</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="http://10.0.103.194:8080/search.html">產品</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">關於我們</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Right Icons -->
+                <div class="d-flex align-items-center">
+                    <a id="search-toggle" class="icon-btn">
+                        <i class="bi bi-search"></i>
+                    </a>
+                    <a href="#" class="icon-btn d-none d-sm-flex">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                    <a href="#" class="icon-btn d-none d-sm-flex">
+                        <i class="bi bi-person"></i>
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <i class="bi bi-handbag"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Search Drawer -->
+        <div id="search-drawer">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="search-input-wrapper">
+                            <input type="text" id="search-input" placeholder="搜尋家具、燈飾、居家擺飾...">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <div class="popular-searches text-start ps-1">
+                            <span>熱門搜尋:</span>
+                            <a href="#">橡木餐桌</a>
+                            <a href="#">亞麻沙發</a>
+                            <a href="#">陶瓷花瓶</a>
+                            <a href="#">編織地毯</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Offcanvas Menu -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title font-serif fs-2" id="mobileMenuLabel">選單</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body pt-4">
+            <ul class="nav flex-column gap-3">
+                <li class="nav-item">
+                    <a class="nav-link fs-4" href="#">裝潢靈感</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-4" href="#">產品</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-4" href="#">關於我們</a>
+                </li>
+            </ul>
+        </div>
+    </div>
