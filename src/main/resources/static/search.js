@@ -126,8 +126,7 @@ function loadSidebar(mainCategoryCode) {
                 html += `
                         <div class="form-check">
                             <input class="form-check-input category-radio" type="radio" name="subCategory" id="cat-${cat.code}" value="${cat.code}">
-                            <label class="form-check-label" for="cat-${cat.code}">${cat.cname
-                    }</label>
+                            <label class="form-check-label" for="cat-${cat.code}">${cat.cname}</label>
                         </div>`;
             });
 
