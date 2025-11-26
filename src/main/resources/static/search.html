@@ -36,7 +36,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 
     <style>
-
+        main {
+            margin-top: 110px;
+        }
     </style>
 </head>
 
@@ -57,9 +59,9 @@
         <!-- 左側細項分類欄 -->
         <div class="d-flex align-items-stretch">
             <div>
-                <nav id="filter">
-                    <button type="button" id="collapse" class="btn collapsebtn">
-                        <i class="bi bi-arrow-bar-left"></i>
+                <nav id="filter" class="active">
+                    <button type="button" id="collapse" class="btn collapsebtn active">
+                        <i class="bi bi-arrow-bar-right"></i>
                     </button>
 
                     <form action="">
@@ -110,7 +112,7 @@
             </div>
         </div>
     </main>
-    
+
     <!-- 最下面的 footer -->
     <div id="footer"></div>
 

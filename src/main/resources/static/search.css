@@ -122,3 +122,46 @@
 .pagination .page-item.disabled .page-link {
     color: #ccc;
 }
+
+/* =========================================
+   次導覽列 (Category Bar) 專用樣式
+   ========================================= */
+
+/* 外層容器：增加上下間距與背景 */
+.category-bar {
+    background-color: #fff;  /* 或是 #f8f7f6 配合你的背景色 */
+    padding: 15px 0;         /* 增加上下呼吸空間 */
+    margin-bottom: 20px;     /* 與下方內容隔開 */
+}
+
+/* 列表設定：確保沒有預設圓點 */
+.category-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+/* 連結樣式：基本文字設定 */
+.category-item a {
+    text-decoration: none;   /* 去除底線 */
+    color: #5a3209;          /* 使用你 filter 的深咖啡色 */
+    font-size: 18px;         /* 字體稍微加大 */
+    font-weight: 500;
+    padding: 8px 12px;       /* 增加點擊範圍 */
+    display: block;
+    transition: all 0.3s ease; /* 平滑過渡效果 */
+    border-bottom: 2px solid transparent; /* 預留底線空間避免跳動 */
+}
+
+/* 滑鼠移過去的效果 (Hover) */
+.category-item a:hover {
+    color: #ec7f13;          /* 使用你主題的橘色 */
+}
+
+/* 當前選中的分類 (Active) */
+/* 注意：JS 會把 active class 加在 li 上 */
+.category-item.active a {
+    color: #ec7f13;          /* 選中變橘色 */
+    font-weight: bold;       /* 加粗 */
+    border-bottom: 2px solid #ec7f13; /* 加上橘色底線 */
+}
