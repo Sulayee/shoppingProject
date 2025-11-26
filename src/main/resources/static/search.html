@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- JQuery -->
-    <script src="/jquery-3.7.1.min.js"></script>
+    <script src="./js/jquery-3.7.1.min.js"></script>
 
     <!-- Ion.RangeSlider.JS(要做範圍拉桿的) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
@@ -42,71 +42,75 @@
 
 <body>
     <!-- 最上層 -->
-    <div id="header"></div>
+    <header>
+        <div id="header"></div>
+    </header>
 
     <!-- 次導覽列：分類標籤 -->
-    <div class="category-bar border-top border-bottom">
-        <div class="container-lg">
-            <ul id="main-nav-list" class="category-list d-flex justify-content-between flex-wrap mb-0"></ul>
-        </div>
-    </div>
-
-    <!-- 左側細項分類欄 -->
-    <div class="d-flex align-items-stretch">
-        <div>
-            <nav id="filter">
-                <button type="button" id="collapse" class="btn collapsebtn">
-                    <i class="bi bi-arrow-bar-left"></i>
-                </button>
-
-                <form action="">
-                    <div class="p-3">
-                        <label class="fs-4 m-1">分類選擇</label><br>
-                        <div id="category-filter">
-                            <div class="test-muted small">載入分類中......</div>
-                        </div>
-                    </div>
-                    <div class="p-3">
-                        <label class="fs-4 m-1">價格範圍</label>
-                        <input type="text" id="priceRangeSlider" name="priceRange">
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-warning m-1 ">確定</button>
-                        </div>
-                    </div>
-                </form>
-            </nav>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <h2 id="category-title">所有商品</h2>
+    <main>
+        <div class="category-bar border-top border-bottom">
+            <div class="container-lg">
+                <ul id="main-nav-list" class="category-list d-flex justify-content-between flex-wrap mb-0"></ul>
             </div>
-            <div class="row" id="product-list">
+        </div>
+
+        <!-- 左側細項分類欄 -->
+        <div class="d-flex align-items-stretch">
+            <div>
+                <nav id="filter">
+                    <button type="button" id="collapse" class="btn collapsebtn">
+                        <i class="bi bi-arrow-bar-left"></i>
+                    </button>
+
+                    <form action="">
+                        <div class="p-3">
+                            <label class="fs-4 m-1">分類選擇</label><br>
+                            <div id="category-filter">
+                                <div class="test-muted small">載入分類中......</div>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <label class="fs-4 m-1">價格範圍</label>
+                            <input type="text" id="priceRangeSlider" name="priceRange">
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-warning m-1 ">確定</button>
+                            </div>
+                        </div>
+                    </form>
+                </nav>
             </div>
 
-            <nav aria-label="產品分頁" id="pagination-nav" style="display: none;">
-                <ul class="pagination justify-content-center mt-5">
-                    <!-- 上一頁 -->
-                    <li class="page-item" id="prevPageItem">
-                        <a class="page-link" href="#" onclick="changePage(-1); return false;" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+            <div class="container">
+                <div class="row">
+                    <h2 id="category-title">所有商品</h2>
+                </div>
+                <div class="row" id="product-list">
+                </div>
 
-                    <div id="pageNumbers" class="d-flex">
-                        <!-- 多少頁 -->
-                    </div>
-                    <!-- 下一頁 -->
-                    <li class="page-item" id="nextPageItem">
-                        <a class="page-link" href="#" onclick="changePage(1); return false;" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                <nav aria-label="產品分頁" id="pagination-nav" style="display: none;">
+                    <ul class="pagination justify-content-center mt-5">
+                        <!-- 上一頁 -->
+                        <li class="page-item" id="prevPageItem">
+                            <a class="page-link" href="#" onclick="changePage(-1); return false;" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <div id="pageNumbers" class="d-flex">
+                            <!-- 多少頁 -->
+                        </div>
+                        <!-- 下一頁 -->
+                        <li class="page-item" id="nextPageItem">
+                            <a class="page-link" href="#" onclick="changePage(1); return false;" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-    </div>
-
+    </main>
+    
     <!-- 最下面的 footer -->
     <div id="footer"></div>
 
