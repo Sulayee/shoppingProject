@@ -57,7 +57,7 @@ $(document).ready(function () {
     // 左側選單收合動畫 (原有的程式碼)
     $("#collapse").on("click", function () {
         $("#filter").toggleClass("active");
-        $(".bi-arrow-bar-left").toggleClass("bi-arrow-bar-right");
+        $(".bi-arrow-bar-right").toggleClass("bi-arrow-bar-left");
         $("#collapse").toggleClass("active");
     });
 });
@@ -330,23 +330,6 @@ function bindEvents() {
         loadProducts();
     });
 
-    // C. 監聽上方「搜尋框」輸入 (按下 Enter)
-    $(".search-input").on("keyup", function (e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // 防止 form submit
-            currentKeyword = $(this).val();
-            currentPage = 0; // 搜尋關鍵字時，重置為第一頁
-            loadProducts();
-        }
-    });
-
-    // D. 監聽上方「搜尋圖示」點擊
-    $("#search-icon").parent().on("click", function (e) {
-        e.preventDefault();
-        currentKeyword = $(".search-input").val();
-        currentPage = 0; // 重置為第一頁
-        loadProducts();
-    });
 }
 // 綁定 CSS Hover 效果
 function bindHoverEffects() {
