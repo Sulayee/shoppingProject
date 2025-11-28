@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,12 +28,21 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Page<ProductEntity> searchProducts(String mainCategoryCode, String subCategoryCode, Integer minPrice, Integer maxPrice, String keyword, Integer page, Integer size){
+    public Page<ProductEntity> searchProducts(String mainCategoryCode, String subCategoryCode, Integer maxPrice,
+            Integer minPrice, String keyword, Integer page, Integer size, String sort) {
 
+        Sort sortOption = switch (sort) {
+            case "latest" -> Sort.by("createdAt").descending();
+            case "priceAsc" -> Sort.by("price").ascending();
+            case "priceDesc" -> Sort.by("price").descending();
+            case "ratingAsc" -> Sort.by("rating").ascending();
+            case "ratingDesc" -> Sort.by("rating").descending();
+            default -> Sort.unsorted();
+        };
         // 建立 Pageable 物件
         // PageRequest.of(頁碼, 每頁大小)
         // Spring Data JPA 的頁碼從 0 開始 每頁 12 筆資料
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, sortOption);
 
         Specification<ProductEntity> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -56,11 +66,11 @@ public class ProductService {
 
             // 價格範圍
             // 找出所有大於最小金額的商品
-            if (minPrice != null){
+            if (minPrice != null) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get("price"), minPrice));
             }
             // 找出所以小於最大金額的商品
-            if (maxPrice != null){
+            if (maxPrice != null) {
                 predicates.add(cb.lessThanOrEqualTo(root.get("price"), maxPrice));
             }
 
@@ -71,6 +81,8 @@ public class ProductService {
                 Predicate descLike = cb.like(root.get("description"), likePattern);
                 predicates.add(cb.or(nameLike, descLike));
             }
+
+            // 排序設定
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };

@@ -6,8 +6,10 @@
 let currentPage = 0;
 // 預設每頁顯示筆數 12
 const pageSize = 12;
-// 從後端取得總頁數
+// 總頁數
 let totalPages = 0;
+// 排序
+let currentSort = "default";
 
 const API_BASE = "/api"; // 後端 API 位置
 
@@ -156,7 +158,8 @@ function loadProducts() {
         maxPrice: maxPrice,
         keyword: currentKeyword,
         page: currentPage,
-        size: pageSize
+        size: pageSize,
+        sort: currentSort
     };
 
     // 3. 顯示 Loading 狀態
@@ -169,6 +172,9 @@ function loadProducts() {
         method: 'GET',
         data: requestData,
         success: function (response) {
+
+            console.log("後端回傳 response =", response);
+
             // 改成 response 是因為後端改成了 Page 物件
             // 更新全域總頁數
             totalPages = response.totalPages;
@@ -178,6 +184,8 @@ function loadProducts() {
 
             // 渲染分頁按鈕 (傳入: 當前頁碼, 總頁數)
             renderPagination(response.number, response.totalPages);
+
+            
         },
         error: function (err) {
             console.error("搜尋商品失敗", err);
@@ -315,14 +323,14 @@ function changePage(delta) {
 // 4. 事件綁定 (Event Listeners)
 // ==========================================
 function bindEvents() {
-    // A. 監聽「側邊欄分類」點擊 (動態生成元素需用 delegate)
+    // 監聽「側邊欄分類」點擊 (動態生成元素需用 delegate)
     $(document).on('change', '.category-radio', function () {
         currentSubCategory = $(this).val(); // 取得 value (spoon, pot...)
         currentPage = 0; // 換分類時，重置為第一頁
         loadProducts(); // 重新搜尋
     });
 
-    // B. 監聽「價格確定」按鈕
+    // 監聽「價格確定」按鈕
     // 注意：這裡假設你的 form 按鈕是 submit 類型，我們要阻擋它跳頁
     $("form").on("submit", function (e) {
         e.preventDefault();
@@ -330,6 +338,12 @@ function bindEvents() {
         loadProducts();
     });
 
+    // 監聽「排序」按鈕
+    $("#sortSelect").on('change', function(){
+        currentSort = $(this).val();
+        currentPage = 0;
+        loadProducts();
+    })
 }
 // 綁定 CSS Hover 效果
 function bindHoverEffects() {

@@ -36,8 +36,10 @@ public class ProductController {
         // 預設頁碼 : 從 0 開始
         @RequestParam(defaultValue = "0") Integer page,
         //  預設每頁顯示的商品數量
-        @RequestParam(defaultValue = "12") Integer size
+        @RequestParam(defaultValue = "12") Integer size,
+        // 排序
+        @RequestParam(defaultValue = "default") String sort
     ) {
-        return productService.searchProducts(mainCategory, subCategory, minPrice, maxPrice, keyword, page, size);
+        return productService.searchProducts(mainCategory, subCategory, maxPrice, minPrice, keyword, page, size, sort);
     }
 }
