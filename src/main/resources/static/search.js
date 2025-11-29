@@ -2,53 +2,42 @@
 // ==========================================
 // 1. 全域設定與變數
 // ==========================================
-// 追蹤當前頁碼 (從 0 開始)
-let currentPage = 0;
-// 預設每頁顯示筆數 12
-const pageSize = 12;
-// 總頁數
-let totalPages = 0;
-// 排序
-let currentSort = "default";
 
+let searchState = {
+    // 紀錄目前的搜尋狀態
+    mainCategory: '', // 大分類 
+    subCategory: '', // 小分類
+    maxPrice: null, // 最大金額
+    minPrice: null, // 最小金額
+    keyword: '', // 搜索欄關鍵字
+    page: 0, // 追蹤當前頁碼 (從 0 開始)
+    size: 12, // 預設每頁顯示筆數 12    
+    sort: 'default' // 排序
+};
+
+let totalPages = 0; // 總頁數
 const API_BASE = "/api"; // 後端 API 位置
 
-function getUrlParameter(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
-// 紀錄目前的搜尋狀態
-let currentMainCategory = ''; // 從網址抓大分類 code
-let currentSubCategory = '';
-let currentKeyword = '';
 
 // ==========================================
 // 2. 頁面初始化 (Entry Point)
 // ==========================================
 $(document).ready(function () {
-    // 從網址列讀取初始大分類，例如 search.html?mainCategory=kitchen
-    currentMainCategory = getUrlParameter('mainCategory') || '';
+    // 從 URL 讀取並初始化 searchState
+    initStateFromURL();
 
-    // 介面初始化：如果有大分類，就載入對應側邊欄
-    if (currentMainCategory) {
-        loadSidebar(currentMainCategory);
-        // 這裡可以設一個暫時的標題，之後可優化成顯示中文名稱
-        $("#category-title").text(currentMainCategory.toUpperCase());
-    }
-    // 初始化價格拉桿 (Ion Range Slider)
-    $("#priceRangeSlider").ionRangeSlider({
-        type: "double",
-        min: 0,
-        max: 10000,
-        from: 0,
-        to: 10000,
-        step: 100,
-        prefix: "NT$",
-        skin: "round"
-    });
+    // 介面初始化 確保價格拉桿使用 searchState 的值
+    initPriceSlider()
 
     // 載入上方大分類的導覽列的函式
     loadMainNavigation();
+
+    // 介面初始化：如果有大分類，就載入對應側邊欄
+    if (searchState.mainCategory) {
+        loadSidebar(searchState.mainCategory);
+        // 這裡可以設一個暫時的標題，之後可優化成顯示中文名稱
+        $("#category-title").text(searchState.mainCategory.toUpperCase());
+    }
 
     // 預設載入第一次商品列表
     loadProducts();
@@ -64,6 +53,50 @@ $(document).ready(function () {
     });
 });
 
+/**
+ * 從 URL 讀取參數到 searchState
+ */
+function initStateFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // 把網址上的值填入我們的狀態物件，如果沒有就維持預設值
+    searchState.mainCategory = urlParams.get('mainCategory') || searchState.mainCategory;
+    searchState.subCategory = urlParams.get('subCategory') || searchState.subCategory;
+    searchState.maxPrice = urlParams.get('maxPrice') ? parseInt(urlParams.get('maxPricee')) : searchState.maxPrice;
+    searchState.minPrice = urlParams.get('minPrice') ? parseInt(urlParams.get('minPricee')) : searchState.minPrice;
+    searchState.keyword = urlParams.get("keyword") || searchState.keyword;
+    searchState.page = urlParams.get('page') ? parseInt(urlParams.get('page')) : searchState.page;
+    searchState.size = urlParams.get('size') ? parseInt(urlParams.get('size')) : searchState.size;
+    searchState.sort = urlParams.get('sort') || searchState.sort;
+
+    console.log("URL初始化狀態:", searchState);
+}
+
+/*
+ * 將 searchState 寫回 URL (不刷新頁面)
+ * 實現 URL 同步的關鍵
+ */
+function updateUrl() {
+    const params = new URLSearchParams();
+
+    // 只有當值非空、非預設值時，才寫入 URL (保持網址乾淨)
+    if (searchState.mainCategory) params.set('mainCategory', searchState.mainCategory);
+    if (searchState.subCategory) params.set('subCategory', searchState.subCategory);
+    if (searchState.maxPrice) params.set('maxPrice', searchState.maxPrice);
+    if (searchState.minPrice) params.set('minPrice', searchState.minPrice);
+    if (searchState.keyword) params.set('keyword', searchState.keyword);
+    if (searchState.page) params.set('page', searchState.page);
+    if (searchState.sort) params.set('sort', searchState.sort);
+
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+
+    // 使用 pushState 更新瀏覽器網址列
+    window.history.pushState(searchState, '', newUrl);
+
+    // 重新載入商品
+    loadProducts();
+}
+
 /*
 * 載入上方大分類導覽列
 */
@@ -73,30 +106,73 @@ function loadMainNavigation() {
         method: 'GET',
         success: function (categories) {
             let html = '';
+            const currentCode = searchState.mainCategory; // <-- 使用 searchState.mainCategory
+
 
             // 選項：全部商品 (讓使用者可以點回首頁或清空篩選)
             html += `
-                <li class="category-item ${currentMainCategory === '' ? 'active' : ''}">
-                    <a href="search.html">全部商品</a>
+                <li class="category-item ${currentCode === '' ? 'active' : ''}">
+                    <a href="#" data-code="" class="main-category-link">全部商品</a>
                 </li>`;
 
             // 迴圈跑後端回傳的所有大分類
             categories.forEach(cat => {
                 // 判斷是否為當前選中的分類 (為了加 highlight 樣式)
-                let isActive = (cat.code === currentMainCategory) ? 'active' : '';
+                let isActive = (cat.code === currentCode) ? 'active' : '';
 
+                // 注意：這裡改用 onclick 函數和 data-code 來處理，不再使用直接的 href
                 html += `
                 <li class="category-item ${isActive}">
-                    <a href="search.html?mainCategory=${cat.code}">${cat.cname}</a>
+                    <a href="#" data-code="${cat.code}" class="main-category-link">${cat.cname}</a>
                 </li>`;
             });
 
             $("#main-nav-list").html(html);
+
+            // 綁定主分類的點擊事件 (需在生成 HTML 後進行)
+            $(".main-category-link").on('click', function (e) {
+                e.preventDefault();
+                const newMainCat = $(this).data('code');
+                onMainCategoryClick(newMainCat);
+            });
         },
         error: function (err) {
             console.error("無法載入主分類導覽", err);
         }
     });
+}
+
+/*
+ * 初始化價格拉桿
+ */
+function initPriceSlider() {
+    // 確保價格從 URL 讀取到，如果沒有就用預設的最大最小值
+    const toVal = searchState.maxPrice !== null ? searchState.maxPrice : 10000;
+    const fromVal = searchState.minPrice !== null ? searchState.minPrice : 0;
+
+    $("#priceRangeSlider").ionRangeSlider({
+        type: "double",
+        min: 0,
+        max: 10000,
+        from: fromVal,
+        to: toVal,
+        step: 100,
+        prefix: "NT$",
+        skin: "round",
+        // 價格變動完成，更新 URL 和搜尋
+        onFinish: function (data) {
+            // 點擊後，更新 searchState
+            searchState.minPrice = data.from;
+            searchState.maxPrice = data.to;
+            searchState.page = 0; // 重設頁碼
+            updateUrl(); // 更新 URL 並重新搜尋
+        }
+    });
+
+    // 如果從 URL 讀取了價格，需要讓排序下拉選單同步顯示
+    if (searchState.sort && searchState.sort !== 'default') {
+        $("#sortSelect").val(searchState.sort);
+    }
 }
 
 // ==========================================
@@ -106,33 +182,36 @@ function loadMainNavigation() {
 * 載入側邊欄小分類
 * API: /api/categories/main/{code}/sub
 */
-function loadSidebar(mainCategoryCode) {
+function loadSidebar(subCategoryCode) {
     $.ajax({
-        url: `${API_BASE
-            }/categories/main/${mainCategoryCode
-            }/sub`,
+        url: `${API_BASE}/categories/main/${subCategoryCode}/sub`,
         method: 'GET',
         success: function (subCategories) {
             let html = '';
+            const currentSubCode = searchState.subCategory; // <-- 使用 searchState.subCategory
 
             // 選項：全部 (不篩選小分類)
+            let isAllActive = currentSubCode === '' ? 'checked' : '';
             html += `
                     <div class="form-check">
-                        <input class="form-check-input category-radio" type="radio" name="subCategory" id="cat-all" value="" checked>
+                        <input class="form-check-input category-radio" type="radio" name="subCategory" id="cat-all" value="" ${isAllActive}>
                         <label class="form-check-label" for="cat-all">全部顯示</label>
                     </div>`;
 
             // 選項：後端回傳的子分類
             subCategories.forEach(cat => {
+                let isActive = (cat.code === currentSubCode) ? 'checked' : '';
                 // value 帶入 code (例如 'spoon')
                 html += `
                         <div class="form-check">
-                            <input class="form-check-input category-radio" type="radio" name="subCategory" id="cat-${cat.code}" value="${cat.code}">
+                            <input class="form-check-input category-radio" type="radio" name="subCategory" id="cat-${cat.code}" value="${cat.code}" ${isActive}>
                             <label class="form-check-label" for="cat-${cat.code}">${cat.cname}</label>
                         </div>`;
             });
 
             $("#category-filter").html(html);
+
+            $("#category-filter").off('change', '.category-radio').on('change', '.category-radio', onSubCategoryChange);
         },
         error: function (err) {
             console.error("載入側邊欄失敗", err);
@@ -145,30 +224,24 @@ function loadSidebar(mainCategoryCode) {
 * API: /api/products/search
 */
 function loadProducts() {
-    // 1. 取得價格範圍
-    let slider = $("#priceRangeSlider").data("ionRangeSlider");
-    let minPrice = slider ? slider.result.from : null;
-    let maxPrice = slider ? slider.result.to : null;
-
-    // 2. 準備參數
+    // 準備參數
     let requestData = {
-        mainCategory: currentMainCategory,
-        subCategory: currentSubCategory,
-        minPrice: minPrice,
-        maxPrice: maxPrice,
-        keyword: currentKeyword,
-        page: currentPage,
-        size: pageSize,
-        sort: currentSort
+        mainCategory: searchState.mainCategory,
+        subCategory: searchState.subCategory,
+        maxPrice: searchState.maxPrice,
+        minPrice: searchState.minPrice,
+        keyword: searchState.keyword,
+        page: searchState.page,
+        size: searchState.size,
+        sort: searchState.sort
     };
 
-    // 3. 顯示 Loading 狀態
+    // 顯示 Loading 狀態
     $("#product-list").html('<div class="col-12 text-center p-5"><div class="spinner-border text-primary" role="status"></div></div>');
 
-    // 4. 發送 AJAX
+    // 發送 AJAX
     $.ajax({
-        url: `${API_BASE
-            }/products/search?`,
+        url: `${API_BASE}/products/search?`,
         method: 'GET',
         data: requestData,
         success: function (response) {
@@ -185,7 +258,7 @@ function loadProducts() {
             // 渲染分頁按鈕 (傳入: 當前頁碼, 總頁數)
             renderPagination(response.number, response.totalPages);
 
-            
+
         },
         error: function (err) {
             console.error("搜尋商品失敗", err);
@@ -231,12 +304,11 @@ function renderProductCards(products) {
                         </div> 
                         <div class="product-info mt-3">
                             <div class="product-name">
-                                <h3>${product.pname
-            }</h3>
+                                <h3>${product.pname}</h3>
                             </div>
+                            <p>${product.description}</p>
                             <div class="product-price">
-                                NT$<span>${product.price
-            }</span>
+                                NT$<span>${product.price}</span>
                             </div>
                         </div>
                     </div>
@@ -304,47 +376,100 @@ function goToPage(pageIndex) {
     // 防止超出範圍
     if (pageIndex < 0 || pageIndex >= totalPages) return;
 
-    currentPage = pageIndex;
-    loadProducts();
+    searchState.page = pageIndex;
+
+    updateUrl();
 
     // 回到列表頂端
     $('html, body').animate({
         scrollTop: $("#product-list").offset().top - 100
-    },
-        300);
+    }, 300);
 }
 // 上一頁 / 下一頁
 function changePage(delta) {
-    let newPage = currentPage + delta;
+    let newPage = searchState.page + delta;
     goToPage(newPage);
 }
 
 // ==========================================
 // 4. 事件綁定 (Event Listeners)
 // ==========================================
+
+// 點擊主分類的事件處理 (新函式)
+function onMainCategoryClick(newMainCat) {
+    // 1. 更新狀態
+    searchState.mainCategory = newMainCat;
+    searchState.subCategory = ''; // 切換主分類通常要清空次分類
+    searchState.page = 0; // 重設頁碼
+
+    // 2. 更新 URL 並搜尋
+    updateUrl();
+
+    // 3. 重新載入上方導覽列
+    loadMainNavigation();
+
+    // 4. 重新載入介面 (側邊欄)
+    if (searchState.mainCategory) {
+        loadSidebar(searchState.mainCategory);
+        $("#category-title").text(searchState.mainCategory.toUpperCase());
+    } else {
+        $("#category-title").text("所有商品");
+        $("#category-filter").empty(); // 清空側邊欄
+    }
+}
+
+// 點擊次分類的事件處理 (新函式，專門給 delegate 用)
+function onSubCategoryChange() {
+    // 1. 更新狀態
+    // 從被點擊的 radio 取得 value
+    searchState.subCategory = $(this).val();
+    searchState.page = 0; // 換分類通常要回到第一頁
+
+    // 2. 更新 URL 並搜尋 (關鍵：將次分類條件寫入網址)
+    updateUrl();
+}
+
+// 點擊排序的事件處理
+function onSortChange() {
+    // 1. 更新狀態
+    searchState.sort = $(this).val();
+    searchState.page = 0; // 排序變了，重設頁碼
+
+    // 2. 更新 URL 並搜尋
+    updateUrl();
+}
+
 function bindEvents() {
     // 監聽「側邊欄分類」點擊 (動態生成元素需用 delegate)
-    $(document).on('change', '.category-radio', function () {
-        currentSubCategory = $(this).val(); // 取得 value (spoon, pot...)
-        currentPage = 0; // 換分類時，重置為第一頁
-        loadProducts(); // 重新搜尋
-    });
+    // 這裡我們需要把事件綁定移到 loadSidebar 的 success 裡面，
+    // 這樣可以確保 UI 正確地使用 searchState 的初始值，然後再綁定。
+    // 這裡先保留綁定，但請注意，如果 subCategory 是動態載入的，建議用 bindSubCategoryEvents
+    // 監聽「價格確定」按鈕 (如果 form 內沒有 button，建議用獨立按鈕監聽)
+    // 這裡我們把價格的更新邏輯移到 initPriceSlider 的 onFinish 裡面了，這裡的 submit 可以刪除或改成關鍵字搜索。
 
-    // 監聽「價格確定」按鈕
-    // 注意：這裡假設你的 form 按鈕是 submit 類型，我們要阻擋它跳頁
+    // 假設你的 form 是用來做關鍵字搜索
     $("form").on("submit", function (e) {
         e.preventDefault();
-        currentPage = 0; // 篩選價格時，重置為第一頁
-        loadProducts();
+        // 1. 從輸入框取得關鍵字 (假設輸入框 ID 是 #keywordInput)
+        const keywordInput = $("#keywordInput").val(); // 你可能需要確認這個 ID
+
+        // 2. 更新狀態
+        searchState.keyword = keywordInput;
+        searchState.page = 0; // 重新搜尋時，重設頁碼
+
+        // 3. 更新 URL 並搜尋
+        updateUrl();
     });
 
     // 監聽「排序」按鈕
-    $("#sortSelect").on('change', function(){
-        currentSort = $(this).val();
-        currentPage = 0;
-        loadProducts();
-    })
+    $("#sortSelect").on('change', onSortChange);
 }
+
+// 獨立綁定子分類事件 (在 loadSidebar 成功後呼叫)
+function bindSubCategoryEvents() {
+    $(document).on('change', '.category-radio', onSubCategoryChange);
+}
+
 // 綁定 CSS Hover 效果
 function bindHoverEffects() {
     $('.product-box').hover(

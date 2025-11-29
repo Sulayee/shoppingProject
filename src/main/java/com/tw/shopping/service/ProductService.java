@@ -33,7 +33,7 @@ public class ProductService {
 
         Sort sortOption = switch (sort) {
             case "latest" -> Sort.by("createdAt").descending();
-            case "priceAsc" -> Sort.by("price").ascending();
+            case "priceAsc" -> Sort.by("price").ascending(); 
             case "priceDesc" -> Sort.by("price").descending();
             case "ratingAsc" -> Sort.by("rating").ascending();
             case "ratingDesc" -> Sort.by("rating").descending();
